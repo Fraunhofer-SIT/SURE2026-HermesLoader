@@ -1,0 +1,5 @@
+<opinions>
+    <constraint loader="Hermes (React Native)" compilerSpecID="default">
+        <constraint primary="1" processor="hermes_v96" size="64" variant="v96" />
+    </constraint>
+</opinions>

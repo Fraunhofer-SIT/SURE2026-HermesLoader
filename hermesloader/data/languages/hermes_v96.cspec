@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compiler_spec>
+    <data_organization>
+        <absolute_max_alignment value="0" />
+        <machine_alignment value="4" />
+        <default_alignment value="1" />
+        <default_pointer_alignment value="4" />
+        <pointer_size value="4" />
+        <short_size value="2" />
+        <integer_size value="4" />
+        <long_size value="4" />
+        <long_long_size value="8" />
+        <size_alignment_map>
+            <entry size="1" alignment="1" />
+            <entry size="2" alignment="2" />
+            <entry size="4" alignment="4" />
+            <entry size="8" alignment="4" />
+        </size_alignment_map>
+    </data_organization>
+
+    <global>
+        <range space="ram"/>
+        <range space="register" first="0x40000" last="0x7ffff"/>
+    </global>
+
+    <stackpointer register="r1" space="ram" growth="negative"/>
+
+    <default_proto>
+        <prototype name="__hermes" extrapop="0" stackshift="0" strategy="register">
+            <input>
+                <pentry minsize="1" maxsize="4">
+                    <register name="param0_Reg8"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="param1_Reg8"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="param2_Reg8"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="param3_Reg8"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="param4_Reg8"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="param5_Reg8"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="param6_Reg8"/>
+                </pentry>
+            </input>
+            <output>
+                <pentry minsize="1" maxsize="4">
+                    <register name="return_Reg8"/>
+                </pentry>
+            </output>
+            <unaffected>
+                <register name="r1"/>
+                <register name="r19"/>
+                <register name="r20"/>
+                <register name="r21"/>
+                <register name="r22"/>
+                <register name="r23"/>
+                <register name="r31"/>
+                <register name="r0_Reg8"/>
+                <register name="r1_Reg8"/>
+                <register name="r2_Reg8"/>
+                <register name="r3_Reg8"/>
+                <register name="r4_Reg8"/>
+                <register name="r5_Reg8"/>
+                <register name="r6_Reg8"/>
+                <register name="r7_Reg8"/>
+                <register name="r8_Reg8"/>
+                <register name="r9_Reg8"/>
+                <register name="r10_Reg8"/>
+                <register name="r11_Reg8"/>
+                <register name="r12_Reg8"/>
+                <register name="r13_Reg8"/>
+                <register name="r14_Reg8"/>
+                <register name="r15_Reg8"/>
+                <register name="r16_Reg8"/>
+                <register name="r17_Reg8"/>
+                <register name="r18_Reg8"/>
+                <register name="r19_Reg8"/>
+                <register name="r20_Reg8"/>
+                <register name="r21_Reg8"/>
+                <register name="r22_Reg8"/>
+                <register name="r23_Reg8"/>
+                <register name="r24_Reg8"/>
+                <register name="r25_Reg8"/>
+                <register name="r26_Reg8"/>
+                <register name="r27_Reg8"/>
+                <register name="r28_Reg8"/>
+                <register name="r29_Reg8"/>
+                <register name="r30_Reg8"/>
+                <register name="r31_Reg8"/>
+                <register name="r32_Reg8"/>
+                <register name="r33_Reg8"/>
+                <register name="r34_Reg8"/>
+                <register name="r35_Reg8"/>
+                <register name="r36_Reg8"/>
+                <register name="r37_Reg8"/>
+                <register name="r38_Reg8"/>
+                <register name="r39_Reg8"/>
+                <register name="r40_Reg8"/>
+                <register name="r41_Reg8"/>
+                <register name="r42_Reg8"/>
+                <register name="r43_Reg8"/>
+                <register name="r44_Reg8"/>
+                <register name="r45_Reg8"/>
+                <register name="r46_Reg8"/>
+                <register name="r47_Reg8"/>
+                <register name="r48_Reg8"/>
+                <register name="r49_Reg8"/>
+                <register name="r50_Reg8"/>
+                <register name="r51_Reg8"/>
+                <register name="r52_Reg8"/>
+                <register name="r53_Reg8"/>
+                <register name="r54_Reg8"/>
+                <register name="r55_Reg8"/>
+                <register name="r56_Reg8"/>
+                <register name="r57_Reg8"/>
+                <register name="r58_Reg8"/>
+                <register name="r59_Reg8"/>
+                <register name="r60_Reg8"/>
+                <register name="r61_Reg8"/>
+                <register name="r62_Reg8"/>
+                <register name="r63_Reg8"/>
+                <register name="r64_Reg8"/>
+                <register name="r65_Reg8"/>
+                <register name="r66_Reg8"/>
+                <register name="r67_Reg8"/>
+                <register name="r68_Reg8"/>
+                <register name="r69_Reg8"/>
+                <register name="r70_Reg8"/>
+                <register name="r71_Reg8"/>
+                <register name="r72_Reg8"/>
+                <register name="r73_Reg8"/>
+                <register name="r74_Reg8"/>
+                <register name="r75_Reg8"/>
+                <register name="r76_Reg8"/>
+                <register name="r77_Reg8"/>
+                <register name="r78_Reg8"/>
+                <register name="r79_Reg8"/>
+                <register name="r80_Reg8"/>
+                <register name="r81_Reg8"/>
+                <register name="r82_Reg8"/>
+                <register name="r83_Reg8"/>
+                <register name="r84_Reg8"/>
+                <register name="r85_Reg8"/>
+                <register name="r86_Reg8"/>
+                <register name="r87_Reg8"/>
+                <register name="r88_Reg8"/>
+                <register name="r89_Reg8"/>
+                <register name="r90_Reg8"/>
+                <register name="r91_Reg8"/>
+                <register name="r92_Reg8"/>
+                <register name="r93_Reg8"/>
+                <register name="r94_Reg8"/>
+                <register name="r95_Reg8"/>
+                <register name="r96_Reg8"/>
+                <register name="r97_Reg8"/>
+                <register name="r98_Reg8"/>
+                <register name="r99_Reg8"/>
+                <register name="r100_Reg8"/>
+                <register name="r101_Reg8"/>
+                <register name="r102_Reg8"/>
+                <register name="r103_Reg8"/>
+                <register name="r104_Reg8"/>
+                <register name="r105_Reg8"/>
+                <register name="r106_Reg8"/>
+                <register name="r107_Reg8"/>
+                <register name="r108_Reg8"/>
+                <register name="r109_Reg8"/>
+                <register name="r110_Reg8"/>
+                <register name="r111_Reg8"/>
+                <register name="r112_Reg8"/>
+                <register name="r113_Reg8"/>
+                <register name="r114_Reg8"/>
+                <register name="r115_Reg8"/>
+                <register name="r116_Reg8"/>
+                <register name="r117_Reg8"/>
+                <register name="r118_Reg8"/>
+                <register name="r119_Reg8"/>
+                <register name="r120_Reg8"/>
+                <register name="r121_Reg8"/>
+                <register name="r122_Reg8"/>
+                <register name="r123_Reg8"/>
+                <register name="r124_Reg8"/>
+                <register name="r125_Reg8"/>
+                <register name="r126_Reg8"/>
+                <register name="r127_Reg8"/>
+                <register name="r128_Reg8"/>
+                <register name="r129_Reg8"/>
+                <register name="r130_Reg8"/>
+                <register name="r131_Reg8"/>
+                <register name="r132_Reg8"/>
+                <register name="r133_Reg8"/>
+                <register name="r134_Reg8"/>
+                <register name="r135_Reg8"/>
+                <register name="r136_Reg8"/>
+                <register name="r137_Reg8"/>
+                <register name="r138_Reg8"/>
+                <register name="r139_Reg8"/>
+                <register name="r140_Reg8"/>
+                <register name="r141_Reg8"/>
+                <register name="r142_Reg8"/>
+                <register name="r143_Reg8"/>
+                <register name="r144_Reg8"/>
+                <register name="r145_Reg8"/>
+                <register name="r146_Reg8"/>
+                <register name="r147_Reg8"/>
+                <register name="r148_Reg8"/>
+                <register name="r149_Reg8"/>
+                <register name="r150_Reg8"/>
+                <register name="r151_Reg8"/>
+                <register name="r152_Reg8"/>
+                <register name="r153_Reg8"/>
+                <register name="r154_Reg8"/>
+                <register name="r155_Reg8"/>
+                <register name="r156_Reg8"/>
+                <register name="r157_Reg8"/>
+                <register name="r158_Reg8"/>
+                <register name="r159_Reg8"/>
+                <register name="r160_Reg8"/>
+                <register name="r161_Reg8"/>
+                <register name="r162_Reg8"/>
+                <register name="r163_Reg8"/>
+                <register name="r164_Reg8"/>
+                <register name="r165_Reg8"/>
+                <register name="r166_Reg8"/>
+                <register name="r167_Reg8"/>
+                <register name="r168_Reg8"/>
+                <register name="r169_Reg8"/>
+                <register name="r170_Reg8"/>
+                <register name="r171_Reg8"/>
+                <register name="r172_Reg8"/>
+                <register name="r173_Reg8"/>
+                <register name="r174_Reg8"/>
+                <register name="r175_Reg8"/>
+                <register name="r176_Reg8"/>
+                <register name="r177_Reg8"/>
+                <register name="r178_Reg8"/>
+                <register name="r179_Reg8"/>
+                <register name="r180_Reg8"/>
+                <register name="r181_Reg8"/>
+                <register name="r182_Reg8"/>
+                <register name="r183_Reg8"/>
+                <register name="r184_Reg8"/>
+                <register name="r185_Reg8"/>
+                <register name="r186_Reg8"/>
+                <register name="r187_Reg8"/>
+                <register name="r188_Reg8"/>
+                <register name="r189_Reg8"/>
+                <register name="r190_Reg8"/>
+                <register name="r191_Reg8"/>
+                <register name="r192_Reg8"/>
+                <register name="r193_Reg8"/>
+                <register name="r194_Reg8"/>
+                <register name="r195_Reg8"/>
+                <register name="r196_Reg8"/>
+                <register name="r197_Reg8"/>
+                <register name="r198_Reg8"/>
+                <register name="r199_Reg8"/>
+                <register name="r200_Reg8"/>
+                <register name="r201_Reg8"/>
+                <register name="r202_Reg8"/>
+                <register name="r203_Reg8"/>
+                <register name="r204_Reg8"/>
+                <register name="r205_Reg8"/>
+                <register name="r206_Reg8"/>
+                <register name="r207_Reg8"/>
+                <register name="r208_Reg8"/>
+                <register name="r209_Reg8"/>
+                <register name="r210_Reg8"/>
+                <register name="r211_Reg8"/>
+                <register name="r212_Reg8"/>
+                <register name="r213_Reg8"/>
+                <register name="r214_Reg8"/>
+                <register name="r215_Reg8"/>
+                <register name="r216_Reg8"/>
+                <register name="r217_Reg8"/>
+                <register name="r218_Reg8"/>
+                <register name="r219_Reg8"/>
+                <register name="r220_Reg8"/>
+                <register name="r221_Reg8"/>
+                <register name="r222_Reg8"/>
+                <register name="r223_Reg8"/>
+                <register name="r224_Reg8"/>
+                <register name="r225_Reg8"/>
+                <register name="r226_Reg8"/>
+                <register name="r227_Reg8"/>
+                <register name="r228_Reg8"/>
+                <register name="r229_Reg8"/>
+                <register name="r230_Reg8"/>
+                <register name="r231_Reg8"/>
+                <register name="r232_Reg8"/>
+                <register name="r233_Reg8"/>
+                <register name="r234_Reg8"/>
+                <register name="r235_Reg8"/>
+                <register name="r236_Reg8"/>
+                <register name="r237_Reg8"/>
+                <register name="r238_Reg8"/>
+                <register name="r239_Reg8"/>
+                <register name="r240_Reg8"/>
+                <register name="r241_Reg8"/>
+                <register name="r242_Reg8"/>
+                <register name="r243_Reg8"/>
+                <register name="r244_Reg8"/>
+                <register name="r245_Reg8"/>
+                <register name="r246_Reg8"/>
+                <register name="r247_Reg8"/>
+                <register name="r248_Reg8"/>
+                <register name="r249_Reg8"/>
+                <register name="r250_Reg8"/>
+                <register name="r251_Reg8"/>
+                <register name="r252_Reg8"/>
+                <register name="r253_Reg8"/>
+                <register name="r254_Reg8"/>
+                <register name="r255_Reg8"/>
+            </unaffected>
+        </prototype>
+    </default_proto>
+
+    <callotherfixup targetop="getByIdInject">
+        <pcode dynamic="true">
+            <input name="object" />
+            <input name="fieldName" />
+            <output name="result" />
+        </pcode>
+    </callotherfixup>
+    <callotherfixup targetop="newArrayWithBufferInject">
+        <pcode dynamic="true">
+            <input name="sizeHint" />
+            <input name="numElements" />
+            <input name="bufferIndex" />
+            <output name="result" />
+        </pcode>
+    </callotherfixup>
+    <callotherfixup targetop="newObjectWithBufferInject">
+        <pcode dynamic="true">
+            <input name="sizeHint" />
+            <input name="numElements" />
+            <input name="bufferKey" />
+            <input name="bufferValue" />
+            <output name="result" />
+        </pcode>
+    </callotherfixup>
+</compiler_spec>

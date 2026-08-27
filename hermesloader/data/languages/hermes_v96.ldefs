@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- See Relax specification: Ghidra/Framework/SoftwareModeling/data/languages/language_definitions.rxg -->
+
+<language_definitions>
+  <language processor="hermes_v96"
+            endian="little"
+            size="64"
+            variant="v96"
+            version="1.0"
+            slafile="hermes_v96.sla"
+            processorspec="hermes_v96.pspec"
+            id="hermes:LE:64:v96"
+            manualindexfile="../manuals/hermes.idx"
+  >
+    <description>Hermes Bytecode v96 (React Native)</description>
+    <compiler name="v96" spec="hermes_v96.cspec" id="default"/>
+  </language>
+</language_definitions>

@@ -1,0 +1,11 @@
+# Copy this file to gradle.properties and update the values for your machine.
+# Example:
+#   Windows PowerShell: Copy-Item gradle.properties.sample gradle.properties
+#   Linux/macOS:        cp gradle.properties.sample gradle.properties
+
+# Absolute path to your Ghidra installation directory.
+# Update this to point to your Ghidra 12 installation
+GHIDRA_INSTALL_DIR=C:/path/to/ghidra_12.0.3_PUBLIC
+
+# Absolute path to JDK 21 used by Gradle.
+org.gradle.java.home=C:/path/to/jdk-21

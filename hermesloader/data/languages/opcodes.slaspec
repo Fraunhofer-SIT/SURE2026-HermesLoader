@@ -1,0 +1,836 @@
+define pcodeop declareGlobalVar;
+define pcodeop createEnvironment;
+define pcodeop loadThisNS;
+define pcodeop getById;
+define pcodeop getByIdInject;
+define pcodeop putById;
+define pcodeop add;
+define pcodeop sub;
+define pcodeop mul;
+define pcodeop div;
+define pcodeop callBuiltin;
+define pcodeop prototypechain;
+define pcodeop contains;
+define pcodeop typeOf;
+define pcodeop isIn;
+define pcodeop getEnvironment;
+define pcodeop storeToEnvironment;
+define pcodeop loadFromEnvironment;
+define pcodeop getGlobalObject;
+define pcodeop getNewTarget;
+define pcodeop throwIfHasRestrictedGlobalProperty;
+define pcodeop putNewOwnById;
+define pcodeop putOwnByIndex;
+define pcodeop putOwnByVal;
+define pcodeop delById;
+define pcodeop getByVal;
+define pcodeop putByVal;
+define pcodeop delByVal;
+define pcodeop putOwnGetterSetterByVal;
+define pcodeop getPNameList;
+define pcodeop getNextPName;
+define pcodeop getBuiltinClosure;
+define pcodeop catch;
+define pcodeop directEval;
+define pcodeop throw;
+define pcodeop throwIfEmpty;
+define pcodeop debugger;
+define pcodeop asyncBreakCheck;
+define pcodeop profilePoint;
+define pcodeop createClosure;
+define pcodeop createGeneratorClosure;
+define pcodeop createAsyncClosure;
+define pcodeop createAsyncClosureIndex;
+define pcodeop createThis;
+define pcodeop selectObject;
+define pcodeop loadParam;
+define pcodeop loadConstBigInt;
+define pcodeop loadConstString;
+define pcodeop coerceThisNS;
+define pcodeop toNumber;
+define pcodeop toNumeric;
+define pcodeop toInt32;
+define pcodeop addEmptyString;
+define pcodeop getArgumentsPropByVal;
+define pcodeop getArgumentsLength;
+define pcodeop reifyArguments;
+define pcodeop createRegExp;
+define pcodeop switchImm;
+define pcodeop createGenerator;
+define pcodeop completeGenerator;
+define pcodeop resumeGenerator;
+define pcodeop startGenerator;
+define pcodeop iteratorBegin;
+define pcodeop iteratorNext;
+define pcodeop iteratorClose;
+define pcodeop saveGenerator;
+define pcodeop newArray;
+define pcodeop newArrayWithBuffer;
+define pcodeop newArrayWithBufferInject;
+define pcodeop newObjectWithParent;
+define pcodeop newObject;
+define pcodeop newObjectWithBuffer;
+define pcodeop newObjectWithBufferInject;
+
+#### Calculate absulte address from string table index
+# 9 byte is the length of a string table entry
+destString: rel is p0_StringIDUInt32[rel = p0_StringIDUInt32 * 9 + 0xA0000000;] {
+    local stringTableAddress:4 = *:4 rel:4;
+    export stringTableAddress;
+}
+
+destString8: rel is p0_StringIDUInt8[rel = p0_StringIDUInt8 * 9 + 0xA0000000;] {
+    local stringTableAddress:4 = *:4 rel:4;
+    export stringTableAddress;
+}
+
+destString16: rel is p0_StringIDUInt16[rel = p0_StringIDUInt16 * 9 + 0xA0000000;] {
+    local stringTableAddress:4 = *:4 rel:4;
+    export stringTableAddress;
+}
+
+#### Calculate absolute address from loaded function table index
+# 8 byte is the length of a loaded function table entry
+
+destFunction: rel is p0_FunctionIDUInt16[rel = p0_FunctionIDUInt16 * 8 + 0xF0000000;] {
+    local functionTableAddress:4 = *:4 rel:4;
+    export functionTableAddress;
+}
+
+destFunctionLong: rel is p0_FunctionIDUInt32[rel = p0_FunctionIDUInt32 * 8 + 0xF0000000;] {
+    local functionTableAddress:4 = *:4 rel:4;
+    export functionTableAddress;
+}
+
+
+:Unreachable is op=0x0 {
+    return [return_address_Reg8];
+}
+:NewObjectWithBuffer val_r0_Reg8, p0_UInt16, p1_UInt16, p2_UInt16, p3_UInt16 is op=0x1; val_r0_Reg8; p0_UInt16; p1_UInt16; p2_UInt16; p3_UInt16 {
+    val_r0_Reg8 = newObjectWithBufferInject(p0_UInt16:2, p1_UInt16:2, p2_UInt16:2, p3_UInt16:2);
+}
+:NewObjectWithBufferLong val_r0_Reg8, p0_UInt16, p1_UInt16, p2_UInt32, p3_UInt32 is op=0x2; val_r0_Reg8; p0_UInt16; p1_UInt16; p2_UInt32; p3_UInt32 {
+    val_r0_Reg8 = newObjectWithBufferInject(p0_UInt16:2, p1_UInt16:2, p2_UInt32:4, p3_UInt32:4);
+}
+:NewObject val_r0_Reg8 is op=0x3; val_r0_Reg8 {
+    val_r0_Reg8 = newObject();
+}
+:NewObjectWithParent val_r0_Reg8, val_r1_Reg8 is op=0x4; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = newObjectWithParent(val_r1_Reg8);
+}
+:NewArrayWithBuffer val_r0_Reg8, p0_UInt16, p1_UInt16, p2_UInt16 is op=0x5; val_r0_Reg8; p0_UInt16; p1_UInt16; p2_UInt16 {
+    val_r0_Reg8 = newArrayWithBufferInject(p0_UInt16:2, p1_UInt16:2, p2_UInt16:2);
+}
+:NewArrayWithBufferLong val_r0_Reg8, p0_UInt16, p1_UInt16, p2_UInt32 is op=0x6; val_r0_Reg8; p0_UInt16; p1_UInt16; p2_UInt32 {
+    val_r0_Reg8 = newArrayWithBufferInject(p0_UInt16:2, p1_UInt16:2, p2_UInt32:4);
+}
+:NewArray val_r0_Reg8, p0_UInt16 is op=0x7; val_r0_Reg8; p0_UInt16 {
+    val_r0_Reg8 = newArray(p0_UInt16:2);
+}
+:Mov val_r0_Reg8, val_r1_Reg8 is op=0x8; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8;
+}
+:MovLong val_r0_Reg32, val_r1_Reg32 is op=0x9; val_r0_Reg32; val_r1_Reg32 {
+    val_r0_Reg32 = val_r1_Reg32;
+}
+:Negate val_r0_Reg8, val_r1_Reg8 is op=0xa; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = -val_r1_Reg8;
+}
+:Not val_r0_Reg8, val_r1_Reg8 is op=0xb; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8[0,1] = !val_r1_Reg8:1;
+}
+:BitNot val_r0_Reg8, val_r1_Reg8 is op=0xc; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = ~val_r1_Reg8;
+}
+:TypeOf val_r0_Reg8, val_r1_Reg8 is op=0xd; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = typeOf(val_r1_Reg8);
+}
+:Eq val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xe; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8[0,1] = (val_r1_Reg8 == val_r2_Reg8);
+}
+:StrictEq val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xf; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8[0,1] = (val_r1_Reg8 == val_r2_Reg8);
+}
+:Neq val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x10; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8[0,1] = (val_r1_Reg8 != val_r2_Reg8);
+}
+:StrictNeq val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x11; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8[0,1] = (val_r1_Reg8 != val_r2_Reg8);
+}
+:Less val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x12; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8[0,1] = (val_r1_Reg8 < val_r2_Reg8);
+}
+:LessEq val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x13; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8[0,1] = (val_r1_Reg8 <= val_r2_Reg8);
+}
+:Greater val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x14; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8[0,1] = (val_r1_Reg8 > val_r2_Reg8);
+}
+:GreaterEq val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x15; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8[0,1] = val_r1_Reg8 >= val_r2_Reg8;
+}
+:Add val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x16; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = add(val_r1_Reg8, val_r2_Reg8);
+}
+:AddN val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x17; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 + val_r2_Reg8;
+}
+:Mul val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x18; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = mul(val_r1_Reg8, val_r2_Reg8);
+}
+:MulN val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x19; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 * val_r2_Reg8;
+}
+:Div val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x1a; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = div(val_r1_Reg8, val_r2_Reg8);
+}
+:DivN val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x1b; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 / val_r2_Reg8;
+}
+:Mod val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x1c; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 % val_r2_Reg8;
+}
+:Sub val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x1d; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = sub(val_r1_Reg8, val_r2_Reg8);
+}
+:SubN val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x1e; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 - val_r2_Reg8;
+}
+:LShift val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x1f; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 << val_r2_Reg8;
+}
+:RShift val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x20; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    # maybee s>> for signed bitshift
+    val_r0_Reg8 = val_r1_Reg8 >> val_r2_Reg8;
+}
+:URshift val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x21; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 >> val_r2_Reg8;
+}
+:BitAnd val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x22; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 & val_r2_Reg8;
+}
+:BitXor val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x23; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 ^ val_r2_Reg8;
+}
+:BitOr val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x24; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 | val_r2_Reg8;
+}
+:Inc val_r0_Reg8, val_r1_Reg8 is op=0x25; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 + 1;
+}
+:Dec val_r0_Reg8, val_r1_Reg8 is op=0x26; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 - 1;
+}
+:InstanceOf val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x27; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    local tmp:1 = prototypechain(val_r1_Reg8);
+    val_r0_Reg8 = contains(tmp, val_r2_Reg8);
+}
+:IsIn val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x28; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = isIn(val_r1_Reg8, val_r2_Reg8);
+}
+:GetEnvironment val_r0_Reg8, p0_UInt8 is op=0x29; val_r0_Reg8; p0_UInt8 {
+    val_r0_Reg8 = getEnvironment(p0_UInt8:1);
+}
+:StoreToEnvironment val_r0_Reg8, p0_UInt8, val_r1_Reg8 is op=0x2a; val_r0_Reg8; p0_UInt8; val_r1_Reg8 {
+    local enviroment:1 = getEnvironment(val_r0_Reg8);
+    storeToEnvironment(enviroment, p0_UInt8:1, val_r1_Reg8);
+}
+:StoreToEnvironmentL val_r0_Reg8, p0_UInt16, val_r1_Reg8 is op=0x2b; val_r0_Reg8; p0_UInt16; val_r1_Reg8 {
+    local enviroment:1 = getEnvironment(val_r0_Reg8);
+    storeToEnvironment(enviroment, p0_UInt16:2, val_r1_Reg8);
+}
+:StoreNPToEnvironment val_r0_Reg8, p0_UInt8, val_r1_Reg8 is op=0x2c; val_r0_Reg8; p0_UInt8; val_r1_Reg8 {
+    local enviroment:1 = getEnvironment(val_r0_Reg8);
+    storeToEnvironment(enviroment, p0_UInt8:1, val_r1_Reg8);
+}
+:StoreNPToEnvironmentL val_r0_Reg8, p0_UInt16, val_r1_Reg8 is op=0x2d; val_r0_Reg8; p0_UInt16; val_r1_Reg8 {
+    local enviroment:1 = getEnvironment(val_r0_Reg8);
+    storeToEnvironment(enviroment, p0_UInt16:2, val_r1_Reg8);
+}
+:LoadFromEnvironment val_r0_Reg8, val_r1_Reg8, p0_UInt8 is op=0x2e; val_r0_Reg8; val_r1_Reg8; p0_UInt8 {
+    local enviroment:1 = getEnvironment(val_r1_Reg8);
+    val_r0_Reg8 = loadFromEnvironment(enviroment, p0_UInt8:1);
+}
+:LoadFromEnvironmentL val_r0_Reg8, val_r1_Reg8, p0_UInt16 is op=0x2f; val_r0_Reg8; val_r1_Reg8; p0_UInt16 {
+    local enviroment:1 = getEnvironment(val_r1_Reg8);
+    val_r0_Reg8 = loadFromEnvironment(enviroment, p0_UInt16:2);
+}
+:GetGlobalObject val_r0_Reg8 is op=0x30; val_r0_Reg8 {
+    #val_r0_Reg8 = getGlobalObject();
+    val_r0_Reg8 = global;
+}
+:GetNewTarget val_r0_Reg8 is op=0x31; val_r0_Reg8 {
+    val_r0_Reg8 = getNewTarget();
+}
+:CreateEnvironment val_r0_Reg8 is op=0x32; val_r0_Reg8 {
+    val_r0_Reg8 = createEnvironment();
+}
+:CreateInnerEnvironment val_r0_Reg8, val_r1_Reg8, p0_UInt32 is op=0x33; val_r0_Reg8; val_r1_Reg8; p0_UInt32 {
+    val_r0_Reg8 = createEnvironment(val_r1_Reg8, p0_UInt32:4);
+}
+
+:DeclareGlobalVar destString is op=0x34; destString {
+    declareGlobalVar(destString);
+}
+:ThrowIfHasRestrictedGlobalProperty p0_StringIDUInt32 is op=0x35; p0_StringIDUInt32 {
+    throwIfHasRestrictedGlobalProperty(p0_StringIDUInt32:4);
+}
+:GetByIdShort val_r0_Reg8, val_r1_Reg8, p0_UInt8,destString8 is op=0x36; val_r0_Reg8; val_r1_Reg8; p0_UInt8; destString8 {
+    val_r0_Reg8 = getByIdInject(val_r1_Reg8, destString8);
+}
+:GetById val_r0_Reg8, val_r1_Reg8, p0_UInt8,destString16 is op=0x37; val_r0_Reg8; val_r1_Reg8; p0_UInt8; destString16 {
+    val_r0_Reg8 = getByIdInject(val_r1_Reg8, destString16);
+}
+:GetByIdLong val_r0_Reg8, val_r1_Reg8, p0_UInt8,destString is op=0x38; val_r0_Reg8; val_r1_Reg8; p0_UInt8; destString {
+    val_r0_Reg8 = getByIdInject(val_r1_Reg8, destString);
+}
+:TryGetById val_r0_Reg8, val_r1_Reg8, p0_UInt8,destString16 is op=0x39; val_r0_Reg8; val_r1_Reg8; p0_UInt8; destString16 {
+    val_r0_Reg8 = getByIdInject(val_r1_Reg8, destString16);
+}
+:TryGetByIdLong val_r0_Reg8, val_r1_Reg8, p0_UInt8,destString is op=0x3a; val_r0_Reg8; val_r1_Reg8; p0_UInt8; destString {
+    val_r0_Reg8 = getByIdInject(val_r1_Reg8, destString);
+}
+:PutById val_r0_Reg8, val_r1_Reg8, p0_UInt8,destString16 is op=0x3b; val_r0_Reg8; val_r1_Reg8; p0_UInt8; destString16 {
+    local string = destString16;
+    ptr:4 = putById(val_r0_Reg8, string);
+    *ptr = val_r1_Reg8;
+}
+:PutByIdLong val_r0_Reg8, val_r1_Reg8, p0_UInt8,destString is op=0x3c; val_r0_Reg8; val_r1_Reg8; p0_UInt8; destString {
+    local string = destString;
+    ptr:4 = putById(val_r0_Reg8, string);
+    *ptr = val_r1_Reg8;
+}
+:TryPutById val_r0_Reg8, val_r1_Reg8, p0_UInt8,destString16 is op=0x3d; val_r0_Reg8; val_r1_Reg8; p0_UInt8; destString16 {
+    local string = destString16;
+    ptr:4 = putById(val_r0_Reg8, string);
+    *ptr = val_r1_Reg8;
+}
+:TryPutByIdLong val_r0_Reg8, val_r1_Reg8, p0_UInt8,destString is op=0x3e; val_r0_Reg8; val_r1_Reg8; p0_UInt8; destString {
+    local string = destString;
+    ptr:4 = putById(val_r0_Reg8, string);
+    *ptr = val_r1_Reg8;
+}
+:PutNewOwnByIdShort val_r0_Reg8, val_r1_Reg8,destString8 is op=0x3f; val_r0_Reg8; val_r1_Reg8; destString8 {
+    local string = destString8;
+    ptr:4 = putNewOwnById(val_r0_Reg8, string);
+    *ptr = val_r1_Reg8;
+}
+:PutNewOwnById val_r0_Reg8, val_r1_Reg8,destString16 is op=0x40; val_r0_Reg8; val_r1_Reg8; destString16 {
+    local string = destString16;
+    ptr:4 = putNewOwnById(val_r0_Reg8, string);
+    *ptr = val_r1_Reg8;
+}
+:PutNewOwnByIdLong val_r0_Reg8, val_r1_Reg8,destString is op=0x41; val_r0_Reg8; val_r1_Reg8; destString {
+    local string = destString;
+    ptr:4 = putNewOwnById(val_r0_Reg8, string);
+    *ptr = val_r1_Reg8;
+}
+:PutNewOwnNEById val_r0_Reg8, val_r1_Reg8,destString16 is op=0x42; val_r0_Reg8; val_r1_Reg8; destString16 {
+    local string = destString16;
+    ptr:4 = putNewOwnById(val_r0_Reg8, string);
+    *ptr = val_r1_Reg8;
+}
+:PutNewOwnNEByIdLong val_r0_Reg8, val_r1_Reg8,destString is op=0x43; val_r0_Reg8; val_r1_Reg8; destString {
+    local string = destString;
+    ptr:4 = putNewOwnById(val_r0_Reg8, string);
+    *ptr = val_r1_Reg8;
+}
+:PutOwnByIndex val_r0_Reg8, val_r1_Reg8, p0_UInt8 is op=0x44; val_r0_Reg8; val_r1_Reg8; p0_UInt8 {
+    local index = p0_UInt8:1;
+    ptr:4 = putOwnByIndex(val_r0_Reg8, index);
+    *ptr = val_r1_Reg8;
+}
+:PutOwnByIndexL val_r0_Reg8, val_r1_Reg8, p0_UInt32 is op=0x45; val_r0_Reg8; val_r1_Reg8; p0_UInt32 {
+    local index = p0_UInt32:4;
+    ptr:4 = putOwnByIndex(val_r0_Reg8, index);
+    *ptr = val_r1_Reg8;
+}
+:PutOwnByVal val_r0_Reg8, val_r1_Reg8, val_r2_Reg8, p0_UInt8 is op=0x46; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8; p0_UInt8 {
+    local boolEnumerable = p0_UInt8:1;
+    ptr:4 = putOwnByVal(val_r0_Reg8, val_r1_Reg8, val_r2_Reg8, boolEnumerable);
+    *ptr = val_r1_Reg8;
+}
+:DelById val_r0_Reg8, val_r1_Reg8,destString16 is op=0x47; val_r0_Reg8; val_r1_Reg8; destString16 {
+    val_r0_Reg8 = delById(val_r1_Reg8, destString16);
+}
+:DelByIdLong val_r0_Reg8, val_r1_Reg8,destString is op=0x48; val_r0_Reg8; val_r1_Reg8; destString {
+    val_r0_Reg8 = delById(val_r1_Reg8, destString);
+}
+:GetByVal val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x49; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = getByVal(val_r1_Reg8, val_r2_Reg8);
+}
+:PutByVal val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x4a; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    putByVal(val_r1_Reg8, val_r0_Reg8, val_r2_Reg8);
+}
+:DelByVal val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x4b; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = delByVal(val_r1_Reg8, val_r2_Reg8);
+}
+:PutOwnGetterSetterByVal val_r0_Reg8, val_r1_Reg8, val_r2_Reg8, val_r3_Reg8, p0_UInt8 is op=0x4c; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8; val_r3_Reg8; p0_UInt8 {
+    local boolEnumerable = p0_UInt8:1;
+    putOwnGetterSetterByVal(val_r1_Reg8, val_r0_Reg8, boolEnumerable, val_r2_Reg8, val_r3_Reg8:1);
+}
+:GetPNameList val_r0_Reg8, val_r1_Reg8, val_r2_Reg8, val_r3_Reg8 is op=0x4d; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8; val_r3_Reg8 {
+    val_r0_Reg8 = getPNameList(val_r1_Reg8, val_r2_Reg8, val_r3_Reg8:1);
+}
+:GetNextPName val_r0_Reg8, val_r1_Reg8, val_r2_Reg8, val_r3_Reg8, val_r4_Reg8 is op=0x4e; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8; val_r3_Reg8; val_r4_Reg8 {
+    #val_r0_Reg8 = getNextPName(val_r1_Reg8, val_r2_Reg8, val_r3_Reg8:1, val_r4_Reg8:1);
+    val_r0_Reg8 = getNextPName(val_r1_Reg8, val_r2_Reg8, val_r3_Reg8:1);
+}
+:Call val_r0_Reg8, val_r1_Reg8, p0_UInt8 is op=0x4f; val_r0_Reg8; val_r1_Reg8; p0_UInt8 {
+    return_address_Reg8 = inst_next;
+    call [val_r1_Reg8];
+    val_r0_Reg8 = return_Reg8;
+}
+:Construct val_r0_Reg8, val_r1_Reg8, p0_UInt8 is op=0x50; val_r0_Reg8; val_r1_Reg8; p0_UInt8 {
+    return_address_Reg8 = inst_next;
+    call [val_r1_Reg8];
+    val_r0_Reg8 = return_Reg8;
+}
+:Call1 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x51; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    param0_Reg8 = val_r2_Reg8;
+    return_address_Reg8 = inst_next;
+    call [val_r1_Reg8];
+    val_r0_Reg8 = return_Reg8;
+}
+:CallDirect val_r0_Reg8, p0_UInt8,destFunction is op=0x52; val_r0_Reg8; p0_UInt8; destFunction {
+    return_address_Reg8 = inst_next;
+    call [destFunction];
+    val_r0_Reg8 = return_Reg8;
+}
+:Call2 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8, val_r3_Reg8 is op=0x53; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8; val_r3_Reg8 {
+    param0_Reg8 = val_r2_Reg8;
+    param1_Reg8 = val_r3_Reg8;
+    return_address_Reg8 = inst_next;
+    call [val_r1_Reg8];
+    val_r0_Reg8 = return_Reg8;
+}
+:Call3 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8, val_r3_Reg8, val_r4_Reg8 is op=0x54; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8; val_r3_Reg8; val_r4_Reg8 {
+    param0_Reg8 = val_r2_Reg8;
+    param1_Reg8 = val_r3_Reg8;
+    param2_Reg8 = val_r4_Reg8;
+    return_address_Reg8 = inst_next;
+    call [val_r1_Reg8];
+    val_r0_Reg8 = return_Reg8;
+}
+:Call4 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8, val_r3_Reg8, val_r4_Reg8, val_r5_Reg8 is op=0x55; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8; val_r3_Reg8; val_r4_Reg8; val_r5_Reg8 {
+    param0_Reg8 = val_r2_Reg8;
+    param1_Reg8 = val_r3_Reg8;
+    param2_Reg8 = val_r4_Reg8;
+    param3_Reg8 = val_r5_Reg8;
+    return_address_Reg8 = inst_next;
+    call [val_r1_Reg8];
+    val_r0_Reg8 = return_Reg8;
+}
+:CallLong val_r0_Reg8, val_r1_Reg8, p0_UInt32 is op=0x56; val_r0_Reg8; val_r1_Reg8; p0_UInt32 {
+    return_address_Reg8 = inst_next;
+    call [val_r1_Reg8];
+}
+:ConstructLong val_r0_Reg8, val_r1_Reg8, p0_UInt32 is op=0x57; val_r0_Reg8; val_r1_Reg8; p0_UInt32 {
+    return_address_Reg8 = inst_next;
+    call [val_r1_Reg8];
+    val_r0_Reg8 = return_Reg8;
+}
+:CallDirectLongIndex val_r0_Reg8, p0_UInt8,destFunctionLong is op=0x58; val_r0_Reg8; p0_UInt8; destFunctionLong {
+    return_address_Reg8 = inst_next;
+    call [destFunctionLong];
+    val_r0_Reg8 = return_Reg8;
+}
+
+
+@include "opcodes_builtins.slaspec"
+
+
+:GetBuiltinClosure val_r0_Reg8, p0_UInt8 is op=0x5b; val_r0_Reg8; p0_UInt8 {
+    val_r0_Reg8 = getBuiltinClosure(p0_UInt8:1);
+}
+
+:RetAndCatch val_r0_Reg8, val_r1_Reg8 is op=0x5c; val_r0_Reg8; op2=0x5d; val_r1_Reg8 {
+    return_Reg8 = val_r0_Reg8;
+    # hack so we see following catch instructions
+    if (error_Reg8 != 0) goto inst_next;
+    return [return_address_Reg8];
+    catch(val_r1_Reg8);
+}
+
+:RetAndResumeGenerator val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x5c; val_r0_Reg8; op2=0x87; val_r1_Reg8; val_r2_Reg8 {
+    return_Reg8 = val_r0_Reg8;
+    # hack so we see following resume instructions
+    if (error_Reg8 != 0) goto inst_next;
+    return [return_address_Reg8];
+    val_r1_Reg8 = resumeGenerator(val_r2_Reg8);
+}
+
+:Ret val_r0_Reg8 is op=0x5c; val_r0_Reg8 {
+    return_Reg8 = val_r0_Reg8;
+    return [return_address_Reg8];
+}
+:Catch val_r0_Reg8 is op=0x5d; val_r0_Reg8 {
+    catch(val_r0_Reg8);
+}
+:DirectEval val_r0_Reg8, val_r1_Reg8, p0_UInt8 is op=0x5e; val_r0_Reg8; val_r1_Reg8; p0_UInt8 {
+    val_r0_Reg8 = directEval(val_r1_Reg8, p0_UInt8:1);
+}
+
+:ThrowAndCatch val_r0_Reg8, val_r1_Reg8 is op=0x5f; val_r0_Reg8; op2=0x5d; val_r1_Reg8 {
+    throw(val_r0_Reg8);
+    # hack so we see following catch instructions
+    if (error_Reg8 != 0) goto inst_next;
+    return [return_address_Reg8];
+    catch(val_r1_Reg8);
+}
+
+:Throw val_r0_Reg8 is op=0x5f; val_r0_Reg8 {
+    throw(val_r0_Reg8);
+    return [return_address_Reg8];
+}
+:ThrowIfEmpty val_r0_Reg8, val_r1_Reg8 is op=0x60; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = throwIfEmpty(val_r1_Reg8);
+}
+:Debugger is op=0x61 & op {
+    debugger();
+}
+:AsyncBreakCheck is op=0x62 & op {
+    asyncBreakCheck();
+}
+:ProfilePoint p0_UInt16 is op=0x63; p0_UInt16 {
+    profilePoint(p0_UInt16:2);
+}
+:CreateClosure val_r0_Reg8, val_r1_Reg8, destFunction is op=0x64; val_r0_Reg8; val_r1_Reg8; destFunction {
+    # set enviroment to current scope
+    #val_r0_Reg8 = createClosure(val_r1_Reg8, p0_FunctionIDUInt16:2);
+    val_r0_Reg8 = destFunction;
+}
+:CreateClosureLongIndex val_r0_Reg8, val_r1_Reg8,destFunctionLong is op=0x65; val_r0_Reg8; val_r1_Reg8; destFunctionLong {
+    #val_r0_Reg8 = createClosure(val_r1_Reg8, destFunctionLong);
+    val_r0_Reg8 = destFunctionLong;
+}
+:CreateGeneratorClosure val_r0_Reg8, val_r1_Reg8, destFunction is op=0x66; val_r0_Reg8; val_r1_Reg8; destFunction {
+    createGeneratorClosure(val_r1_Reg8, destFunction);
+    val_r0_Reg8 = destFunction;
+}
+:CreateGeneratorClosureLongIndex val_r0_Reg8, val_r1_Reg8, destFunctionLong is op=0x67; val_r0_Reg8; val_r1_Reg8; destFunctionLong {
+    createGeneratorClosure(val_r1_Reg8, destFunctionLong);
+    val_r0_Reg8 = destFunctionLong;
+}
+:CreateAsyncClosure val_r0_Reg8, val_r1_Reg8, destFunction is op=0x68; val_r0_Reg8; val_r1_Reg8; destFunction {
+    createAsyncClosureIndex(val_r1_Reg8, destFunction);
+    val_r0_Reg8 = destFunction;
+}
+:CreateAsyncClosureLongIndex val_r0_Reg8, val_r1_Reg8, destFunctionLong is op=0x69; val_r0_Reg8; val_r1_Reg8; destFunctionLong {
+    createAsyncClosureIndex(val_r1_Reg8, destFunctionLong);
+    val_r0_Reg8 = destFunctionLong;
+}
+:CreateThis val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x6a; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = createThis(val_r1_Reg8, val_r2_Reg8);
+}
+:SelectObject val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x6b; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = selectObject(val_r1_Reg8, val_r2_Reg8);
+}
+:LoadParam val_r0_Reg8, p0_UInt8 is op=0x6c; val_r0_Reg8; p0_UInt8 {
+    val_r0_Reg8 = loadParam(p0_UInt8:1);
+}
+:LoadParamLong val_r0_Reg8, p0_UInt32 is op=0x6d; val_r0_Reg8; p0_UInt32 {
+    val_r0_Reg8 = loadParam(p0_UInt32:4);
+}
+:LoadConstUInt8 val_r0_Reg8, p0_UInt8 is op=0x6e; val_r0_Reg8; p0_UInt8 {
+    val_r0_Reg8 = p0_UInt8;
+}
+:LoadConstInt val_r0_Reg8, p0_Imm32 is op=0x6f; val_r0_Reg8; p0_Imm32 {
+    val_r0_Reg8 = p0_Imm32;
+}
+:LoadConstDouble val_r0_Reg8, p0_Double is op=0x70; val_r0_Reg8; p0_Double {
+    val_r0_Reg8 = p0_Double;
+}
+:LoadConstBigInt val_r0_Reg8, p0_BigIntIDUInt16 is op=0x71; val_r0_Reg8; p0_BigIntIDUInt16 {
+    val_r0_Reg8 = loadConstBigInt(p0_BigIntIDUInt16:2);
+}
+:LoadConstBigIntLongIndex val_r0_Reg8, p0_BigIntIDUInt32 is op=0x72; val_r0_Reg8; p0_BigIntIDUInt32 {
+    val_r0_Reg8 = loadConstBigInt(p0_BigIntIDUInt32:4);
+}
+:LoadConstString val_r0_Reg8,destString16 is op=0x73; val_r0_Reg8; destString16 {
+    val_r0_Reg8 = destString16;
+}
+:LoadConstStringLongIndex val_r0_Reg8,destString is op=0x74; val_r0_Reg8; destString {
+    val_r0_Reg8 = destString;
+}
+:LoadConstEmpty val_r0_Reg8 is op=0x75; val_r0_Reg8 {
+    val_r0_Reg8 = 0;
+}
+:LoadConstUndefined val_r0_Reg8 is op=0x76; val_r0_Reg8 {
+    val_r0_Reg8 = 0;
+}
+:LoadConstNull val_r0_Reg8 is op=0x77; val_r0_Reg8 {
+    val_r0_Reg8 = 0;
+}
+:LoadConstTrue val_r0_Reg8 is op=0x78; val_r0_Reg8 {
+    val_r0_Reg8 = 1;
+}
+:LoadConstFalse val_r0_Reg8 is op=0x79; val_r0_Reg8 {
+    val_r0_Reg8 = 0;
+}
+:LoadConstZero val_r0_Reg8 is op=0x7a; val_r0_Reg8 {
+    val_r0_Reg8 = 0;
+}
+:CoerceThisNS val_r0_Reg8, val_r1_Reg8 is op=0x7b; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = coerceThisNS(val_r1_Reg8);
+}
+:LoadThisNS val_r0_Reg8 is op=0x7c; val_r0_Reg8 {
+    val_r0_Reg8 = loadThisNS();
+}
+:ToNumber val_r0_Reg8, val_r1_Reg8 is op=0x7d; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = toNumber(val_r1_Reg8);
+}
+:ToNumeric val_r0_Reg8, val_r1_Reg8 is op=0x7e; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = toNumeric(val_r1_Reg8);
+}
+:ToInt32 val_r0_Reg8, val_r1_Reg8 is op=0x7f; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = toInt32(val_r1_Reg8);
+}
+:AddEmptyString val_r0_Reg8, val_r1_Reg8 is op=0x80; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = addEmptyString(val_r1_Reg8);
+}
+:GetArgumentsPropByVal val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x81; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = getArgumentsPropByVal(val_r1_Reg8, val_r2_Reg8);
+}
+:GetArgumentsLength val_r0_Reg8, val_r1_Reg8 is op=0x82; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = getArgumentsLength(val_r1_Reg8);
+}
+:ReifyArguments val_r0_Reg8 is op=0x83; val_r0_Reg8 {
+    reifyArguments(val_r0_Reg8);
+}
+:CreateRegExp val_r0_Reg8, p0_StringIDUInt32, p1_StringIDUInt32, p2_UInt32 is op=0x84; val_r0_Reg8; p0_StringIDUInt32; p1_StringIDUInt32; p2_UInt32 {
+    val_r0_Reg8 = createRegExp(p0_StringIDUInt32:4, p1_StringIDUInt32:4, p2_UInt32:4);
+}
+:SwitchImm val_r0_Reg8, p0_UInt32, p1_Addr32, p2_UInt32, p3_UInt32 is op=0x85; val_r0_Reg8; p0_UInt32; p1_Addr32; p2_UInt32; p3_UInt32 {
+    switchImm(val_r0_Reg8, p0_UInt32:4, p1_Addr32:4, p2_UInt32:4, p3_UInt32:4);
+}
+:StartGenerator is op=0x86 & op {
+    startGenerator();
+}
+:ResumeGenerator val_r0_Reg8, val_r1_Reg8 is op=0x87; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = resumeGenerator(val_r1_Reg8);
+}
+:CompleteGenerator is op=0x88 & op {
+    completeGenerator();
+}
+:CreateGenerator val_r0_Reg8, val_r1_Reg8, destFunction is op=0x89; val_r0_Reg8; val_r1_Reg8; destFunction {
+    createGenerator(val_r1_Reg8, destFunction);
+    val_r0_Reg8 = destFunction;
+}
+:CreateGeneratorLongIndex val_r0_Reg8, val_r1_Reg8, destFunctionLong is op=0x8a; val_r0_Reg8; val_r1_Reg8; destFunctionLong {
+    createGenerator(val_r1_Reg8, destFunctionLong);
+    val_r0_Reg8 = destFunctionLong;
+}
+:IteratorBegin val_r0_Reg8, val_r1_Reg8 is op=0x8b; val_r0_Reg8; val_r1_Reg8 {
+    val_r0_Reg8 = iteratorBegin(val_r1_Reg8);
+}
+:IteratorNext val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0x8c; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = iteratorNext(val_r1_Reg8, val_r2_Reg8);
+}
+:IteratorClose val_r0_Reg8, p0_UInt8 is op=0x8d; val_r0_Reg8; p0_UInt8 {
+    iteratorClose(val_r0_Reg8, p0_UInt8:1);
+}
+
+dest: rel is p0_Addr8[rel = inst_start + p0_Addr8;] {
+    export *[ram]:4 rel;
+}
+
+destLong: rel is p0_Addr32[rel = inst_start + p0_Addr32;] {
+    export *[ram]:4 rel;
+}
+
+:Jmp dest is op=0x8e; dest {
+    if (error_Reg8 != 0) goto inst_next;
+    goto dest;
+}
+
+:JmpLong destLong is op=0x8f; destLong {
+    if (error_Reg8 != 0) goto inst_next;
+    goto destLong;
+}
+:JmpTrue dest, val_r0_Reg8 is op=0x90; dest; val_r0_Reg8 {
+    if (val_r0_Reg8 == True) goto dest;
+}
+:JmpTrueLong destLong, val_r0_Reg8 is op=0x91; destLong; val_r0_Reg8 {
+    if (val_r0_Reg8 != 0) goto destLong;
+}
+:JmpFalse dest, val_r0_Reg8 is op=0x92; dest; val_r0_Reg8 {
+    if (val_r0_Reg8 == 0) goto dest;
+}
+:JmpFalseLong destLong, val_r0_Reg8 is op=0x93; destLong; val_r0_Reg8 {
+    if (val_r0_Reg8 == 0) goto destLong;
+}
+:JmpUndefined dest, val_r0_Reg8 is op=0x94; dest; val_r0_Reg8 {
+    if (val_r0_Reg8 == 0) goto dest;
+}
+:JmpUndefinedLong destLong, val_r0_Reg8 is op=0x95; destLong; val_r0_Reg8 {
+    if (val_r0_Reg8 == 0) goto destLong;
+}
+:SaveGenerator p0_Addr8 is op=0x96; p0_Addr8 {
+    saveGenerator(p0_Addr8:1);
+}
+:SaveGeneratorLong p0_Addr32 is op=0x97; p0_Addr32 {
+    saveGenerator(p0_Addr32:4);
+}
+:JLess dest, val_r0_Reg8, val_r1_Reg8 is op=0x98; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 < val_r1_Reg8) goto dest;
+}
+:JLessLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0x99; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 < val_r1_Reg8) goto destLong;
+}
+:JNotLess dest, val_r0_Reg8, val_r1_Reg8 is op=0x9a; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 >= val_r1_Reg8) goto dest;
+}
+:JNotLessLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0x9b; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 >= val_r1_Reg8) goto destLong;
+}
+:JLessN dest, val_r0_Reg8, val_r1_Reg8 is op=0x9c; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 < val_r1_Reg8) goto dest;
+}
+:JLessNLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0x9d; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 < val_r1_Reg8) goto destLong;
+}
+:JNotLessN dest, val_r0_Reg8, val_r1_Reg8 is op=0x9e; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 >= val_r1_Reg8) goto dest;
+}
+:JNotLessNLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0x9f; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 >= val_r1_Reg8) goto destLong;
+}
+:JLessEqual dest, val_r0_Reg8, val_r1_Reg8 is op=0xa0; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 <= val_r1_Reg8) goto dest;
+}
+:JLessEqualLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xa1; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 <= val_r1_Reg8) goto destLong;
+}
+:JNotLessEqual dest, val_r0_Reg8, val_r1_Reg8 is op=0xa2; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 > val_r1_Reg8) goto dest;
+}
+:JNotLessEqualLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xa3; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 > val_r1_Reg8) goto destLong;
+}
+:JLessEqualN dest, val_r0_Reg8, val_r1_Reg8 is op=0xa4; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 <= val_r1_Reg8) goto dest;
+}
+:JLessEqualNLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xa5; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 <= val_r1_Reg8) goto destLong;
+}
+:JNotLessEqualN dest, val_r0_Reg8, val_r1_Reg8 is op=0xa6; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 > val_r1_Reg8) goto dest;
+}
+:JNotLessEqualNLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xa7; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 > val_r1_Reg8) goto destLong;
+}
+:JGreater dest, val_r0_Reg8, val_r1_Reg8 is op=0xa8; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 > val_r1_Reg8) goto dest;
+}
+:JGreaterLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xa9; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 > val_r1_Reg8) goto destLong;
+}
+:JNotGreater dest, val_r0_Reg8, val_r1_Reg8 is op=0xaa; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 <= val_r1_Reg8) goto dest;
+}
+:JNotGreaterLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xab; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 <= val_r1_Reg8) goto destLong;
+}
+:JGreaterN dest, val_r0_Reg8, val_r1_Reg8 is op=0xac; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 > val_r1_Reg8) goto dest;
+}
+:JGreaterNLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xad; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 > val_r1_Reg8) goto destLong;
+}
+:JNotGreaterN dest, val_r0_Reg8, val_r1_Reg8 is op=0xae; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 <= val_r1_Reg8) goto dest;
+}
+:JNotGreaterNLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xaf; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 <= val_r1_Reg8) goto destLong;
+}
+:JGreaterEqual dest, val_r0_Reg8, val_r1_Reg8 is op=0xb0; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 >= val_r1_Reg8) goto dest;
+}
+:JGreaterEqualLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xb1; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 >= val_r1_Reg8) goto destLong;
+}
+:JNotGreaterEqual dest, val_r0_Reg8, val_r1_Reg8 is op=0xb2; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 < val_r1_Reg8) goto dest;
+}
+:JNotGreaterEqualLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xb3; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 < val_r1_Reg8) goto destLong;
+}
+:JGreaterEqualN dest, val_r0_Reg8, val_r1_Reg8 is op=0xb4; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 >= val_r1_Reg8) goto dest;
+}
+:JGreaterEqualNLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xb5; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 >= val_r1_Reg8) goto destLong;
+}
+:JNotGreaterEqualN dest, val_r0_Reg8, val_r1_Reg8 is op=0xb6; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 < val_r1_Reg8) goto dest;
+}
+:JNotGreaterEqualNLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xb7; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 < val_r1_Reg8) goto destLong;
+}
+:JEqual dest, val_r0_Reg8, val_r1_Reg8 is op=0xb8; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 == val_r1_Reg8) goto dest;
+}
+:JEqualLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xb9; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 == val_r1_Reg8) goto destLong;
+}
+:JNotEqual dest, val_r0_Reg8, val_r1_Reg8 is op=0xba; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 != val_r1_Reg8) goto dest;
+}
+:JNotEqualLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xbb; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 != val_r1_Reg8) goto destLong;
+}
+:JStrictEqual dest, val_r0_Reg8, val_r1_Reg8 is op=0xbc; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 == val_r1_Reg8) goto dest;
+}
+:JStrictEqualLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xbd; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 == val_r1_Reg8) goto destLong;
+}
+:JStrictNotEqual dest, val_r0_Reg8, val_r1_Reg8 is op=0xbe; dest; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 != val_r1_Reg8) goto dest;
+}
+:JStrictNotEqualLong destLong, val_r0_Reg8, val_r1_Reg8 is op=0xbf; destLong; val_r0_Reg8; val_r1_Reg8 {
+    if (val_r0_Reg8 != val_r1_Reg8) goto destLong;
+}
+:Add32 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc0; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 + val_r2_Reg8;
+}
+:Sub32 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc1; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 - val_r2_Reg8;
+}
+:Mul32 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc2; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 * val_r2_Reg8;
+}
+:Divi32 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc3; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 s/ val_r2_Reg8;
+}
+:Divu32 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc4; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = val_r1_Reg8 / val_r2_Reg8;
+}
+:Loadi8 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc5; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = * val_r2_Reg8;
+}
+:Loadu8 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc6; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = * val_r2_Reg8;
+}
+:Loadi16 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc7; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = * val_r2_Reg8;
+}
+:Loadu16 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc8; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = * val_r2_Reg8;
+}
+:Loadi32 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xc9; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = * val_r2_Reg8;
+}
+:Loadu32 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xca; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    val_r0_Reg8 = * val_r2_Reg8;
+}
+:Store8 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xcb; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    * val_r1_Reg8 = val_r2_Reg8;
+}
+:Store16 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xcc; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    * val_r1_Reg8 = val_r2_Reg8;
+}
+:Store32 val_r0_Reg8, val_r1_Reg8, val_r2_Reg8 is op=0xcd; val_r0_Reg8; val_r1_Reg8; val_r2_Reg8 {
+    * val_r1_Reg8 = val_r2_Reg8;
+}

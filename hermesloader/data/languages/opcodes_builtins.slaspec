@@ -1,0 +1,275 @@
+# Opcode for builtins
+define pcodeop Array.isArray;
+define pcodeop Date.UTC;
+define pcodeop Date.parse;
+define pcodeop JSON.parse;
+define pcodeop JSON.stringify;
+define pcodeop Math.abs;
+define pcodeop Math.acos;
+define pcodeop Math.asin;
+define pcodeop Math.atan;
+define pcodeop Math.atan2;
+define pcodeop Math.ceil;
+define pcodeop Math.cos;
+define pcodeop Math.exp;
+define pcodeop Math.floor;
+define pcodeop Math.hypot;
+define pcodeop Math.imul;
+define pcodeop Math.log;
+define pcodeop Math.max;
+define pcodeop Math.min;
+define pcodeop Math.pow;
+define pcodeop Math.round;
+define pcodeop Math.sin;
+define pcodeop Math.sqrt;
+define pcodeop Math.tan;
+define pcodeop Math.trunc;
+define pcodeop Object.create;
+define pcodeop Object.defineProperties;
+define pcodeop Object.defineProperty;
+define pcodeop Object.freeze;
+define pcodeop Object.getOwnPropertyDescriptor;
+define pcodeop Object.getOwnPropertyNames;
+define pcodeop Object.getPrototypeOf;
+define pcodeop Object.isExtensible;
+define pcodeop Object.isFrozen;
+define pcodeop Object.keys;
+define pcodeop Object.seal;
+define pcodeop String.fromCharCode;
+define pcodeop HermesInternal.silentSetPrototypeOf;
+define pcodeop HermesInternal.requireFast;
+define pcodeop HermesInternal.getTemplateObject;
+define pcodeop HermesInternal.ensureObject;
+define pcodeop HermesInternal.getMethod;
+define pcodeop HermesInternal.throwTypeError;
+define pcodeop HermesInternal.generatorSetDelegated;
+define pcodeop HermesInternal.copyDataProperties;
+define pcodeop HermesInternal.copyRestArgs;
+define pcodeop HermesInternal.arraySpread;
+define pcodeop HermesInternal.apply;
+define pcodeop HermesInternal.exportAll;
+define pcodeop HermesInternal.exponentiationOperator;
+define pcodeop HermesInternal.initRegexNamedGroups;
+define pcodeop HermesInternal.getOriginalNativeErrorConstructor;
+
+
+:CallBuiltin val_r0_Reg8,p0_UInt8,p1_UInt8 is op=0x59 & op; val_r0_Reg8; p0_UInt8; p1_UInt8 {
+    val_r0_Reg8 = callBuiltin(p0_UInt8:1, p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x00, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x00; p1_UInt8{
+    val_r0_Reg8 = Array.isArray(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x01, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x01; p1_UInt8{
+    val_r0_Reg8 = Date.UTC(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x02, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x02; p1_UInt8{
+    val_r0_Reg8 = Date.parse(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x03, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x03; p1_UInt8{
+    val_r0_Reg8 = JSON.parse(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x04, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x04; p1_UInt8{
+    val_r0_Reg8 = JSON.stringify(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x05, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x05; p1_UInt8{
+    val_r0_Reg8 = Math.abs(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x06, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x06; p1_UInt8{
+    val_r0_Reg8 = Math.acos(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x07, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x07; p1_UInt8{
+    val_r0_Reg8 = Math.asin(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x08, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x08; p1_UInt8{
+    val_r0_Reg8 = Math.atan(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x09, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x09; p1_UInt8{
+    val_r0_Reg8 = Math.atan2(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x0A, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x0A; p1_UInt8{
+    val_r0_Reg8 = Math.ceil(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x0B, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x0B; p1_UInt8{
+    val_r0_Reg8 = Math.cos(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x0C, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x0C; p1_UInt8{
+    val_r0_Reg8 = Math.exp(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x0D, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x0D; p1_UInt8{
+    val_r0_Reg8 = Math.floor(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x0E, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x0E; p1_UInt8{
+    val_r0_Reg8 = Math.hypot(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x0F, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x0F; p1_UInt8{
+    val_r0_Reg8 = Math.imul(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x10, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x10; p1_UInt8{
+    val_r0_Reg8 = Math.log(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x11, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x11; p1_UInt8{
+    val_r0_Reg8 = Math.max(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x12, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x12; p1_UInt8{
+    val_r0_Reg8 = Math.min(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x13, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x13; p1_UInt8{
+    val_r0_Reg8 = Math.pow(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x14, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x14; p1_UInt8{
+    val_r0_Reg8 = Math.round(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x15, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x15; p1_UInt8{
+    val_r0_Reg8 = Math.sin(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x16, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x16; p1_UInt8{
+    val_r0_Reg8 = Math.sqrt(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x17, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x17; p1_UInt8{
+    val_r0_Reg8 = Math.tan(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x18, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x18; p1_UInt8{
+    val_r0_Reg8 = Math.trunc(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x19, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x19; p1_UInt8{
+    val_r0_Reg8 = Object.create(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x1A, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x1A; p1_UInt8{
+    val_r0_Reg8 = Object.defineProperties(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x1B, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x1B; p1_UInt8{
+    val_r0_Reg8 = Object.defineProperty(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x1C, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x1C; p1_UInt8{
+    val_r0_Reg8 = Object.freeze(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x1D, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x1D; p1_UInt8{
+    val_r0_Reg8 = Object.getOwnPropertyDescriptor(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x1E, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x1E; p1_UInt8{
+    val_r0_Reg8 = Object.getOwnPropertyNames(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x1F, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x1F; p1_UInt8{
+    val_r0_Reg8 = Object.getPrototypeOf(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x20, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x20; p1_UInt8{
+    val_r0_Reg8 = Object.isExtensible(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x21, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x21; p1_UInt8{
+    val_r0_Reg8 = Object.isFrozen(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x22, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x22; p1_UInt8{
+    val_r0_Reg8 = Object.keys(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x23, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x23; p1_UInt8{
+    val_r0_Reg8 = Object.seal(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x24, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x24; p1_UInt8{
+    val_r0_Reg8 = String.fromCharCode(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x25, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x25; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.silentSetPrototypeOf(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x26, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x26; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.requireFast(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x27, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x27; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.getTemplateObject(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x28, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x28; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.ensureObject(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x29, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x29; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.getMethod(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x2A, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x2A; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.throwTypeError(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x2B, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x2B; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.copyDataProperties(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x2C, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x2C; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.generatorSetDelegated(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x2D, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x2D; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.copyRestArgs(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x2E, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x2E; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.arraySpread(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x2F, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x2F; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.apply(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x30, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x30; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.exportAll(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x31, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x31; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.exponentiationOperator(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x32, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x32; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.initRegexNamedGroups(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x33, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x33; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.getOriginalNativeErrorConstructor(p1_UInt8:1);
+}
+
+:CallBuiltin val_r0_Reg8, 0x34, p1_UInt8 is op=0x59; val_r0_Reg8; p0_UInt8=0x34; p1_UInt8{
+    val_r0_Reg8 = HermesInternal.getOriginalNativeErrorConstructor(p1_UInt8:1);
+}
+
+:CallBuiltinLong val_r0_Reg8,p0_UInt8,p1_UInt32 is op=0x5a  & op; val_r0_Reg8; p0_UInt8; p1_UInt32 {
+    val_r0_Reg8 = callBuiltin(p0_UInt8:1, p1_UInt32:4);
+
+}

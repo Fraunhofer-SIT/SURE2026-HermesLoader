@@ -1,0 +1,5 @@
+# Root-only local state
+/.ghidra/
+
+# Local VS Code configuration
+/.vscode/

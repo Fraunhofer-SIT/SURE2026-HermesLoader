@@ -1,0 +1,43 @@
+define token r0_Reg32_token(32)
+    val_r0_Reg32=(0, 7);
+define token r1_Reg32_token(32)
+    val_r1_Reg32=(0, 7);
+define token r2_Reg32_token(32)
+    val_r2_Reg32=(0, 7);
+define token r3_Reg32_token(32)
+    val_r3_Reg32=(0, 7);
+
+attach variables [val_r0_Reg32 val_r1_Reg32 val_r2_Reg32 val_r3_Reg32] [
+    r0_Reg32 r1_Reg32 r2_Reg32 r3_Reg32 r4_Reg32 r5_Reg32 r6_Reg32 r7_Reg32
+    r8_Reg32 r9_Reg32 r10_Reg32 r11_Reg32 r12_Reg32 r13_Reg32 r14_Reg32 r15_Reg32
+    r16_Reg32 r17_Reg32 r18_Reg32 r19_Reg32 r20_Reg32 r21_Reg32 r22_Reg32 r23_Reg32
+    r24_Reg32 r25_Reg32 r26_Reg32 r27_Reg32 r28_Reg32 r29_Reg32 r30_Reg32 r31_Reg32
+    r32_Reg32 r33_Reg32 r34_Reg32 r35_Reg32 r36_Reg32 r37_Reg32 r38_Reg32 r39_Reg32
+    r40_Reg32 r41_Reg32 r42_Reg32 r43_Reg32 r44_Reg32 r45_Reg32 r46_Reg32 r47_Reg32
+    r48_Reg32 r49_Reg32 r50_Reg32 r51_Reg32 r52_Reg32 r53_Reg32 r54_Reg32 r55_Reg32
+    r56_Reg32 r57_Reg32 r58_Reg32 r59_Reg32 r60_Reg32 r61_Reg32 r62_Reg32 r63_Reg32
+    r64_Reg32 r65_Reg32 r66_Reg32 r67_Reg32 r68_Reg32 r69_Reg32 r70_Reg32 r71_Reg32
+    r72_Reg32 r73_Reg32 r74_Reg32 r75_Reg32 r76_Reg32 r77_Reg32 r78_Reg32 r79_Reg32
+    r80_Reg32 r81_Reg32 r82_Reg32 r83_Reg32 r84_Reg32 r85_Reg32 r86_Reg32 r87_Reg32
+    r88_Reg32 r89_Reg32 r90_Reg32 r91_Reg32 r92_Reg32 r93_Reg32 r94_Reg32 r95_Reg32
+    r96_Reg32 r97_Reg32 r98_Reg32 r99_Reg32 r100_Reg32 r101_Reg32 r102_Reg32 r103_Reg32
+    r104_Reg32 r105_Reg32 r106_Reg32 r107_Reg32 r108_Reg32 r109_Reg32 r110_Reg32 r111_Reg32
+    r112_Reg32 r113_Reg32 r114_Reg32 r115_Reg32 r116_Reg32 r117_Reg32 r118_Reg32 r119_Reg32
+    r120_Reg32 r121_Reg32 r122_Reg32 r123_Reg32 r124_Reg32 r125_Reg32 r126_Reg32 r127_Reg32
+    r128_Reg32 r129_Reg32 r130_Reg32 r131_Reg32 r132_Reg32 r133_Reg32 r134_Reg32 r135_Reg32
+    r136_Reg32 r137_Reg32 r138_Reg32 r139_Reg32 r140_Reg32 r141_Reg32 r142_Reg32 r143_Reg32
+    r144_Reg32 r145_Reg32 r146_Reg32 r147_Reg32 r148_Reg32 r149_Reg32 r150_Reg32 r151_Reg32
+    r152_Reg32 r153_Reg32 r154_Reg32 r155_Reg32 r156_Reg32 r157_Reg32 r158_Reg32 r159_Reg32
+    r160_Reg32 r161_Reg32 r162_Reg32 r163_Reg32 r164_Reg32 r165_Reg32 r166_Reg32 r167_Reg32
+    r168_Reg32 r169_Reg32 r170_Reg32 r171_Reg32 r172_Reg32 r173_Reg32 r174_Reg32 r175_Reg32
+    r176_Reg32 r177_Reg32 r178_Reg32 r179_Reg32 r180_Reg32 r181_Reg32 r182_Reg32 r183_Reg32
+    r184_Reg32 r185_Reg32 r186_Reg32 r187_Reg32 r188_Reg32 r189_Reg32 r190_Reg32 r191_Reg32
+    r192_Reg32 r193_Reg32 r194_Reg32 r195_Reg32 r196_Reg32 r197_Reg32 r198_Reg32 r199_Reg32
+    r200_Reg32 r201_Reg32 r202_Reg32 r203_Reg32 r204_Reg32 r205_Reg32 r206_Reg32 r207_Reg32
+    r208_Reg32 r209_Reg32 r210_Reg32 r211_Reg32 r212_Reg32 r213_Reg32 r214_Reg32 r215_Reg32
+    r216_Reg32 r217_Reg32 r218_Reg32 r219_Reg32 r220_Reg32 r221_Reg32 r222_Reg32 r223_Reg32
+    r224_Reg32 r225_Reg32 r226_Reg32 r227_Reg32 r228_Reg32 r229_Reg32 r230_Reg32 r231_Reg32
+    r232_Reg32 r233_Reg32 r234_Reg32 r235_Reg32 r236_Reg32 r237_Reg32 r238_Reg32 r239_Reg32
+    r240_Reg32 r241_Reg32 r242_Reg32 r243_Reg32 r244_Reg32 r245_Reg32 r246_Reg32 r247_Reg32
+    r248_Reg32 r249_Reg32 r250_Reg32 r251_Reg32 r252_Reg32 r253_Reg32 r254_Reg32 r255_Reg32
+];

@@ -1,0 +1,19 @@
+/bin/
+/.gradle/
+/build/
+/dist/
+
+# Generated SLEIGH compiler outputs
+/data/languages/*.sla
+/data/languages/*.slaspec.sla
+
+# Local Eclipse refactoring history
+/.settings/org.eclipse.ltk.core.refactoring.prefs
+/.settings/org.eclipse.buildship.core.prefs
+
+# IDE metadata (machine-specific)
+/.antProperties.xml
+/.pydevproject
+
+# Local machine build configuration
+/gradle.properties

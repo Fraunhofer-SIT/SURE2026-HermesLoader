@@ -1,0 +1,125 @@
+define token p0_UInt8_token(8)
+    p0_UInt8=(0, 7);
+define token p1_UInt8_token(8)
+    p1_UInt8=(0, 7);
+define token p2_UInt8_token(8)
+    p2_UInt8=(0, 7);
+define token p3_UInt8_token(8)
+    p3_UInt8=(0, 7);
+
+define token p0_UInt16_token(16)
+    p0_UInt16=(0, 15);
+define token p1_UInt16_token(16)
+    p1_UInt16=(0, 15);
+define token p2_UInt16_token(16)
+    p2_UInt16=(0, 15);
+define token p3_UInt16_token(16)
+    p3_UInt16=(0, 15);
+
+define token p0_UInt32_token(32)
+    p0_UInt32=(0, 31);
+define token p1_UInt32_token(32)
+    p1_UInt32=(0, 31);
+define token p2_UInt32_token(32)
+    p2_UInt32=(0, 31);
+define token p3_UInt32_token(32)
+    p3_UInt32=(0, 31);
+
+define token p0_StringIDUInt8_token(8)
+    p0_StringIDUInt8=(0, 7);
+define token p1_StringIDUInt8_token(8)
+    p1_StringIDUInt8=(0, 7);
+define token p2_StringIDUInt8_token(8)
+    p2_StringIDUInt8=(0, 7);
+define token p3_StringIDUInt8_token(8)
+    p3_StringIDUInt8=(0, 7);
+
+define token p0_StringIDUInt16_token(16)
+    p0_StringIDUInt16=(0, 15);
+define token p1_StringIDUInt16_token(16)
+    p1_StringIDUInt16=(0, 15);
+define token p2_StringIDUInt16_token(16)
+    p2_StringIDUInt16=(0, 15);
+define token p3_StringIDUInt16_token(16)
+    p3_StringIDUInt16=(0, 15);
+
+define token p0_StringIDUInt32_token(32)
+    p0_StringIDUInt32=(0, 31);
+define token p1_StringIDUInt32_token(32)
+    p1_StringIDUInt32=(0, 31);
+define token p2_StringIDUInt32_token(32)
+    p2_StringIDUInt32=(0, 31);
+define token p3_StringIDUInt32_token(32)
+    p3_StringIDUInt32=(0, 31);
+
+define token p0_Addr8_token(8)
+    p0_Addr8=(0, 7) signed;
+define token p1_Addr8_token(8)
+    p1_Addr8=(0, 7) signed;
+define token p2_Addr8_token(8)
+    p2_Addr8=(0, 7) signed;
+define token p3_Addr8_token(8)
+    p3_Addr8=(0, 7) signed;
+
+define token p0_Addr32_token(32) endian=little
+    p0_Addr32=(0, 31) signed;
+define token p1_Addr32_token(32) endian=little
+    p1_Addr32=(0, 31) signed;
+define token p2_Addr32_token(32) endian=little
+    p2_Addr32=(0, 31) signed;
+define token p3_Addr32_token(32) endian=little
+    p3_Addr32=(0, 31) signed;
+
+define token p0_FunctionIDUInt16_token(16)
+    p0_FunctionIDUInt16=(0, 15);
+define token p1_FunctionIDUInt16_token(16)
+    p1_FunctionIDUInt16=(0, 15);
+define token p2_FunctionIDUInt16_token(16)
+    p2_FunctionIDUInt16=(0, 15);
+define token p3_FunctionIDUInt16_token(16)
+    p3_FunctionIDUInt16=(0, 15);
+
+define token p0_FunctionIDUInt32_token(32)
+    p0_FunctionIDUInt32=(0, 31);
+define token p1_FunctionIDUInt32_token(32)
+    p1_FunctionIDUInt32=(0, 31);
+define token p2_FunctionIDUInt32_token(32)
+    p2_FunctionIDUInt32=(0, 31);
+define token p3_FunctionIDUInt32_token(32)
+    p3_FunctionIDUInt32=(0, 31);
+
+define token p0_BigIntIDUInt16_token(16)
+    p0_BigIntIDUInt16=(0, 15);
+define token p1_BigIntIDUInt16_token(16)
+    p1_BigIntIDUInt16=(0, 15);
+define token p2_BigIntIDUInt16_token(16)
+    p2_BigIntIDUInt16=(0, 15);
+define token p3_BigIntIDUInt16_token(16)
+    p3_BigIntIDUInt16=(0, 15);
+
+define token p0_BigIntIDUInt32_token(32)
+    p0_BigIntIDUInt32=(0, 31);
+define token p1_BigIntIDUInt32_token(32)
+    p1_BigIntIDUInt32=(0, 31);
+define token p2_BigIntIDUInt32_token(32)
+    p2_BigIntIDUInt32=(0, 31);
+define token p3_BigIntIDUInt32_token(32)
+    p3_BigIntIDUInt32=(0, 31);
+
+define token p0_Imm32_token(32)
+    p0_Imm32=(0, 31);
+define token p1_Imm32_token(32)
+    p1_Imm32=(0, 31);
+define token p2_Imm32_token(32)
+    p2_Imm32=(0, 31);
+define token p3_Imm32_token(32)
+    p3_Imm32=(0, 31);
+
+define token p0_Double_token(64)
+    p0_Double=(0, 63);
+define token p1_Double_token(64)
+    p1_Double=(0, 63);
+define token p2_Double_token(64)
+    p2_Double=(0, 63);
+define token p3_Double_token(64)
+    p3_Double=(0, 63);
